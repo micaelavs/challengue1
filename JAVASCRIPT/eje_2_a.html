@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <span>
+            <label for="fecha_inicio">fecha inicio</label>
+            <input type="datetime-local" name="fecha_inicio" id="fecha_inicio">
+            <label for="fecha_fin">fecha fin</label>
+            <input type="datetime-local" name="fecha_fin" id="fecha_fin">
+            <button type="button" id="enviar">enviar</button>
+        </span>
+    </div>
+    <br>
+    <div id="contenedor">
+
+    </div>
+</body>
+
+<script>
+    class Fibonacci {
+        constructor(fecha_inicio, fecha_fin) {
+            let y = fecha_inicio.getFullYear();
+            let m = fecha_inicio.getMonth();
+
+            this.firstDayTimestamp = Math.floor(new Date(
+                fecha_inicio.getFullYear(),
+                fecha_inicio.getMonth(),
+                1)
+                .getTime() / 100000);
+            this.lastDayTimestamp = Math.floor(new Date(
+                fecha_fin.getFullYear(),
+                fecha_inicio.getMonth() + 1,
+                0).getTime() / 100000);
+        }
+        generarSecuencia() {
+            console.log('start');
+            let num1 = 0;
+            let num2 = 1;
+            
+            let counter = 0;
+            let lim = this.lastDayTimestamp - this.firstDayTimestamp;
+            let arr = [];
+            while (counter < lim) {
+                let num3 = num2 + num1;
+                num1 = num2;
+                num2 = num3;
+                counter = counter + 1;
+
+                arr[counter] = num3;
+            }
+            return arr;
+        }
+    }
+
+    $(document).ready(function () {
+        $('#enviar').click(function () {
+            let input_fecha_inicio = new Date($('#fecha_inicio')[0].value);
+            let input_fecha_fin = new Date($('#fecha_fin')[0].value);
+
+            if (input_fecha_inicio != 'Invalid Date' && input_fecha_fin != 'Invalid Date') {
+                let fibo = new Fibonacci(input_fecha_inicio, input_fecha_fin);
+                
+                $.each(fibo.generarSecuencia(), function (i,v) {
+                    $('#contenedor').append($("<div class=''>"+ v +"</div>"));
+                });
+            }
+        });
+    });
+
+</script>
+
+</html>
